@@ -1,0 +1,10 @@
+=====================================================================================================
+###mybatisPlus逆向工程自动生成代码：
+    1、导入逆向工程依赖
+            <!-- velocity 模板引擎, Mybatis Plus 代码生成器需要 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+            </dependency>
+    2、配置代码生成工具
+
