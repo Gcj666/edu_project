@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.ObjectName;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/eduService/edu-teacher")
+@CrossOrigin(allowCredentials="true",maxAge = 3600)
 public class EduTeacherController {
 
     //注入service
@@ -56,11 +56,11 @@ public class EduTeacherController {
         Page<EduTeacher> page = new Page<>(current,size);
         eduTeacherService.page(page,null);
         //返回总条数
-        try {
-            int i = 1/0;
-        } catch (Exception e) {
-            throw new GuliException(20001,"亲，你的除数不能为0~");
-        }
+//        try {
+//            int i = 1/0;
+//        } catch (Exception e) {
+//            throw new GuliException(20001,"亲，你的除数不能为0~");
+//        }
         long total = page.getTotal();
         //显示记录
         List<EduTeacher> records = page.getRecords();
@@ -88,7 +88,7 @@ public class EduTeacherController {
         if (!StringUtils.isBlank(name)){
             queryWrapper.like("name",name);
         }
-        if (!StringUtils.isEmpty(level.toString())){
+        if (level != null){
             queryWrapper.eq("level",level);
         }
         if (!StringUtils.isBlank(begin)){
@@ -97,7 +97,7 @@ public class EduTeacherController {
         if (!StringUtils.isBlank(end)){
             queryWrapper.le("gmt_create", end);
         }
-
+        queryWrapper.orderByDesc("gmt_create");
         //执行分页查询
         eduTeacherService.page(page,queryWrapper);
 
@@ -126,7 +126,7 @@ public class EduTeacherController {
     @GetMapping("getTeacher/{id}")
     public R getTeacher(@PathVariable String id){
         EduTeacher eduTeacher = eduTeacherService.getById(id);
-        return R.ok().data("讲师",eduTeacher);
+        return R.ok().data("teacher",eduTeacher);
     }
 
     //根据id修改讲师方法
